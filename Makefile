@@ -15,7 +15,7 @@ $(TARG) : $(OBJS)
 ifeq ($(UNAME),Darwin)
 	g++ -Wall -o $@ -framework CoreServices $(LFLAGS) $(OBJS) v8/libv8.a 
 else
-	g++ -Wall -o $@ -lpthread $(LFLAGS) $(OBJS) v8/libv8.a 
+	g++ -Wall -o $@ -lrt -lpthread $(LFLAGS) $(OBJS) v8/libv8.a 
 endif
 
 clean:
