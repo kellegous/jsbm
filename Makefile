@@ -1,3 +1,5 @@
+UNAME := $(shell uname -s)
+
 OBJS=jsbm.o timer.o engine.o format.o stats.o
 TARG=jsbm
 
@@ -10,7 +12,11 @@ ALL : $(TARG)
 	g++ -c -Wall -o $@ $(CFLAGS) $<
 
 $(TARG) : $(OBJS)
-	g++ -Wall -o $@ -framework CoreServices $(LFLAGS) $(OBJS) v8/libv8.a
+ifeq ($(UNAME),Darwin)
+	g++ -Wall -o $@ -framework CoreServices $(LFLAGS) $(OBJS) v8/libv8.a 
+else
+	g++ -Wall -o $@ -lpthread $(LFLAGS) $(OBJS) v8/libv8.a 
+endif
 
 clean:
 	rm -f $(TARG) $(OBJS)

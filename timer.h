@@ -2,6 +2,7 @@
 #define TIMER_H__
 
 #include <memory>
+#include <stdint.h>
 
 class Timer {
  public:

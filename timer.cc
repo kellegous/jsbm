@@ -1,5 +1,6 @@
 #include "timer.h"
 
+#if defined(__APPLE__)
 #include <mach/mach.h>
 #include <mach/mach_time.h>
 #include <CoreServices/CoreServices.h>
@@ -12,3 +13,12 @@ double Timer::GetElapsed() {
   Nanoseconds nanos = AbsoluteToNanoseconds(*(AbsoluteTime*)&elapsed);
   return (*(uint64_t*)&nanos) / 1000000.0;
 }
+#else
+Timer::Timer() : start_time_(0) {
+}
+
+double Timer::GetElapsed() {
+  return 0.0;
+}
+
+#endif
