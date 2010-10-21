@@ -4,7 +4,11 @@ OBJS=jsbm.o timer.o engine.o format.o stats.o
 TARG=jsbm
 
 CFLAGS=-I. -Iv8/include -DXP_UNIX -m32
-LFLAGS=-m32
+ifeq ($(UNAME),Darwin)
+LFLAGS=-framework CoreServices -m32
+else
+LFLAGS=-m32 -lrt -lpthread
+endif
 
 ALL : $(TARG)
 
@@ -12,11 +16,7 @@ ALL : $(TARG)
 	g++ -c -Wall -o $@ $(CFLAGS) $<
 
 $(TARG) : $(OBJS)
-ifeq ($(UNAME),Darwin)
-	g++ -Wall -o $@ -framework CoreServices $(LFLAGS) $(OBJS) v8/libv8.a 
-else
-	g++ -Wall -o $@ -lrt -lpthread $(LFLAGS) $(OBJS) v8/libv8.a 
-endif
+	g++ -Wall -o $@ $(LFLAGS) $(OBJS) v8/libv8.a 
 
 clean:
 	rm -f $(TARG) $(OBJS)
